@@ -1,0 +1,186 @@
+@import url(../../assets/icon/iconfont.css);
+.song_list_header {
+    position: relative;
+    z-index: 0;
+    border-radius: 0 0 20px 20px;
+    &::after {
+        content: "";
+        width: 100%;
+        height: 100%;
+        position: absolute;
+        left: 0;
+        top: 0;
+        background: inherit;
+        filter: blur(8px);
+        z-index: -1;
+        border-radius: 0 0 20px 20px;
+    }
+    .song_list_info {
+        display: flex;
+        justify-content: space-between;
+        padding: 0 20px;
+        .song_list_img {
+            width: 35vw;
+            img {
+                width: 100%;
+                border-radius: 15px;
+            }
+        }
+        .info {
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            flex: 1;
+            padding: 10px;
+            overflow: hidden;
+            .info_info {
+                display: flex;
+                .info_avatarUrl {
+                    width: 30px;
+                    height: 30px;
+                    margin: 5px 0;
+                    position: relative;
+                    img {
+                        width: 100%;
+                        border-radius: 50%;
+                    }
+                    .info_identityIconUrl {
+                        position: absolute;
+                        bottom: -5px;
+                        right: -5px;
+                        img {
+                            width: 15px;
+                            height: 15px;
+                        }
+                    }
+                }
+                .info_nikename {
+                    font-size: 12px;
+                    color: rgb(209, 206, 206);
+                    padding: 0 8px;
+                }
+                .info_add {
+                    width: 35px;
+                    height: 20px;
+                    background-color: rgba(255, 255, 255, 0.171);
+                    text-align: center;
+                    border-radius: 30px;
+                    span {
+                        color: #fff;
+                    }
+                }
+            }
+            .info_description {
+                overflow: hidden;
+                text-overflow: ellipsis;
+                white-space: nowrap;
+                color: rgb(209, 206, 206);
+                font-size: 12px;
+            }
+        }
+        .info_icon {
+            padding: 4px 0;
+            .icon-xiala {
+                font-size: 30px;
+                color: #fff;
+            }
+        }
+    }
+    .song_list_share {
+        width: 80vw;
+        height: 24px;
+        line-height: 24px;
+        border-radius: 30px;
+        margin: auto;
+        position: relative;
+        background-color: #fff;
+        top: 20px;
+        display: flex;
+        justify-content: space-around;
+        padding: 10px 0;
+        box-shadow: 0px 0px 2px 0px rgb(194, 192, 192) inset;
+        div {
+            flex: 1;
+            text-align: center;
+            &:nth-child(2) {
+                border-left: 1px solid rgba(51, 51, 51, 0.192);
+                border-right: 1px solid rgba(51, 51, 51, 0.192);
+            }
+            .iconfont {
+                margin-right: 3px;
+                font-weight: bold;
+            }
+        }
+    }
+}
+.song_list_l,
+.song_list {
+    background-color: #a6c0eed7;
+    // background-color: #fff;
+}
+.song_list_l {
+    padding: 40px 0 0 0;
+    .play_list_header {
+        display: flex;
+        justify-content: space-between;
+        padding: 10px;
+        span {
+            font-size: 20px;
+        }
+        .play_list_left {
+            .iconfont {
+                color: orangered;
+                font-size: 25px;
+            }
+            .text {
+                margin: 0 5px;
+                font-weight: bold;
+            }
+            i{
+                font-style: normal;
+                font-size: 14px;
+            }
+        }
+        .play_list_right {
+            .iconfont {
+                &:nth-child(1) {
+                    margin: 0 10px;
+                }
+                font-size: 25px;
+            }
+        }
+    }
+    .play_list_song {
+        padding: 0 10px 60px;
+        li {
+            display: flex;
+            justify-content: space-between;
+            padding: 10px 0;
+            .song_index {
+                color: #fff;
+                width: 30px;
+                font-size: 20px;
+                text-align: center;
+            }
+            .song_detail {
+                flex: 1;
+                display: flex;
+                flex-direction: column;
+                margin-left: 10px;
+            }
+            .song_icon {
+                .iconfont {
+                    font-size: 25px;
+                    &:nth-child(1) {
+                        margin: 0 10px;
+                    }
+                }
+            }
+        }
+    }
+}
+.juz {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}

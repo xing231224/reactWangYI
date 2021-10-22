@@ -1,0 +1,229 @@
+* {
+    margin: 0;
+    padding: 0;
+}
+.browse {
+    width: 100vw;
+    height: 100%;
+    background-image: linear-gradient(to top, #fbc2eb 0%, #a6c1ee 100%);
+    .pullDown_z {
+        width: 100%;
+        height: 0;
+        overflow-y: scroll;
+        z-index: 9999999;
+        background-image: linear-gradient(to top, #fbc2eb 0%, #a6c1ee 100%);
+        transition: height 0.5s;
+        p {
+            height: 80px;
+            line-height: 80px;
+            text-align: center;
+            font-size: 17px;
+            color: #fff;
+            border-bottom: 1px solid #ccc3;
+            &:last-child {
+                border: 0;
+            }
+        }
+    }
+    .songList {
+        width: 100%;
+        ul {
+            padding: 0 10px 62px;
+            li {
+                display: flex;
+                justify-content: space-between;
+                padding: 10px 0;
+                border-bottom: 1px solid rgba(204, 204, 204, 0.639);
+                .leftSong {
+                    width: 48%;
+                    img {
+                        border-radius: 10px;
+                        width: 100%;
+                    }
+                }
+                .rightSong {
+                    width: 48%;
+                    display: flex;
+                    flex-direction: column;
+                    padding: 20px 10px;
+                    justify-content: space-between;
+                    border-radius: 10px;
+                    box-sizing: border-box;
+                    // box-shadow: 0px 0px 4px 1px #ccc;
+                    // box-shadow: 1px 1px 2px 0 rgba(0,0,0,.15), inset 1px 2px 0 0 #fff;
+                    // box-shadow: 0 0 2px 2px rgba(71,167,235,.86);
+                    box-shadow: 0 0 2px 2px rgba(143, 191, 224, 0.86);
+
+                    .avatarUrl {
+                        width: 100%;
+                        display: flex;
+                        justify-content: space-between;
+
+                        .avatarUrlImg {
+                            width: 50px;
+                            height: 50px;
+                            border-radius: 50%;
+                        }
+                        .like {
+                            width: 20px;
+                            display: flex;
+                            flex-direction: column;
+                            justify-content: center;
+                            img {
+                                width: 100%;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+    .searchMen {
+        width: 100%;
+        height: 90vh;
+        background-image: linear-gradient(to top, #fbc2eb 0%, #a6c1ee 100%);
+        display: none;
+        .history {
+            position: relative;
+            // display: flex;
+            // justify-content: space-between;
+            text-align: center;
+            padding-top: 20px;
+            ul {
+                width: 80%;
+                margin: auto;
+                display: flex;
+                overflow-x: scroll;
+                // overflow: -moz-scrollbars-none;
+                &::-webkit-scrollbar {
+                    background-color: transparent;
+                }
+                padding: 5px 0;
+                li {
+                    &:first-child {
+                        margin-left: 10%;
+                    }
+                    &:last-child {
+                        margin-right: 10%;
+                    }
+                    list-style: none;
+                    padding: 4px 10px;
+                    background-color: #fff;
+                    border-radius: 40px;
+                    margin: 0 4px;
+                    white-space: nowrap;
+                    box-shadow: 0px 0px 3px 1px #fff;
+                }
+            }
+            .frist_s {
+                font-weight: bold;
+                color: #000;
+                left: 0;
+                top: 0;
+                border-top-right-radius: 40px;
+                border-bottom-right-radius: 40px;
+            }
+            span {
+                padding: 10px 0;
+                width: 15%;
+                position: absolute;
+                background-color: #fff;
+                box-shadow: 0px 0px 3px 0px #333;
+                margin-top: 20px;
+            }
+            .last_s {
+                color: red;
+                right: 0;
+                top: 0;
+                border-top-left-radius: 40px;
+                border-bottom-left-radius: 40px;
+            }
+        }
+
+        .hotSearch {
+            padding-top: 30px;
+            h3 {
+                color: #fff;
+                margin-left: 10px;
+            }
+            ul {
+                width: 95%;
+                margin: auto;
+                display: flex;
+                justify-content: space-around;
+                flex-wrap: wrap;
+                padding: 10px 0 0 0;
+                overflow: hidden;
+                li {
+                    list-style: none;
+                    border: 2px solid #a6c1ee;
+                    border-radius: 10px;
+                    background-color: #fff;
+                    padding: 5px 10px;
+                    // animation: roll 5s infinite;
+                }
+            }
+        }
+    }
+    .searchList {
+        // width: 100%;
+        height: auto;
+        padding: 10px;
+        padding-bottom: 62px;
+        p {
+            padding: 10px;
+            border-bottom: 1px solid rgba(238, 238, 238, 0.63);
+        }
+    }
+    .backTop {
+        position: fixed;
+        bottom: 20%;
+        right: 2%;
+        width: 50px;
+        height: 50px;
+        img {
+            width: 100%;
+        }
+    }
+}
+.browse_hidden {
+    overflow: hidden;
+    height: 0;
+}
+.browse_show {
+    height: 100% !important ;
+    margin-top: 42px;
+}
+.browse_top {
+    width: 100%;
+    box-sizing: border-box;
+    background-color: #a6c1ee;
+    position: fixed;
+    top: 0;
+}
+.textName {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    word-break: break-all;
+    text-overflow: ellipsis;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2; /* 这里是超出几行省略 */
+}
+.show {
+    display: block;
+}
+.hide {
+    display: none;
+}
+
+@keyframes roll {
+    0% {
+        transform: translateX(100px);
+    }
+    100% {
+        transform: translateX(-400px);
+    }
+}

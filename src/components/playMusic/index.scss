@@ -1,0 +1,242 @@
+body {
+    width: 100vw;
+    height: 100vh;
+    // background-image: linear-gradient(to top, #f2adaf 0%, #fecfef 99%, #fecfef 100%);
+    background-color: #a6c1ee !important;
+}
+.audio-head {
+    width: 100%;
+    .pullIco {
+        position: relative;
+        top: 20px;
+        left: 10px;
+    }
+    .audio-head-tittle,
+    .audio-head-tittle-by {
+        width: 50%;
+        margin: auto;
+        text-align: center;
+    }
+    .audio-head-tittle {
+        font-size: 14px;
+        color: rgb(255, 255, 255);
+    }
+    .audio-head-tittle-by {
+        font-size: 12px;
+        color: rgb(152, 152, 152);
+    }
+}
+.audio-img {
+    width: 100%;
+    position: relative;
+    overflow: hidden;
+}
+#audio-img-canvas {
+    display: block;
+    margin: 40px auto 0;
+}
+#audio-img-canvas-play {
+    position: absolute;
+    right: 24px;
+    top: 0;
+    transform-origin: top;
+    overflow: hidden;
+}
+.audio-img-canvas-on {
+    display: block;
+    margin: 40px auto 0;
+}
+.audio-img-canvas-play-off {
+    transition: all 0.5s;
+    transform: rotate(5deg);
+}
+@keyframes img-cover {
+    from {
+        transform: rotate(0);
+    }
+    to {
+        transform: rotate(360deg);
+    }
+}
+.audio-img-canvas-on {
+    animation: img-cover 2.5s linear infinite 0.5s;
+}
+.audio-btn {
+    display: flex;
+    justify-content: space-between;
+    width: 90%;
+    height: 100px;
+    margin: auto;
+}
+.audio-btn-list {
+    width: 36px;
+    height: 36px;
+    margin: 32px 4px;
+    transition: all 0.5s;
+}
+.audio-btn-list-on {
+    background: url("../../assets/play/单曲循环.png") no-repeat center;
+    background-size: 36px 36px;
+}
+.audio-btn-list-off {
+    background: url("../../assets/play/循环.png") no-repeat center;
+    background-size: 36px 36px;
+}
+.audio-btn-list-fun {
+    background: url("../../assets/play/随机.png") no-repeat center;
+    background-size: 36px 36px;
+}
+.audio-btn-before {
+    background: url("../../assets/play/上一个，上一曲.png") no-repeat center;
+    width: 36px;
+    height: 36px;
+    background-size: 36px 36px;
+    margin: 32px 4px;
+    cursor: pointer;
+}
+.audio-btn-sound {
+    width: 36px;
+    height: 36px;
+    background: url("../../assets/play/声音.png") no-repeat center;
+    background-size: 36px 36px;
+    margin: 32px 4px;
+}
+.audio-btn-next {
+    width: 36px;
+    height: 36px;
+    background: url("../../assets/play/下一个，下一曲.png") no-repeat center;
+    background-size: 36px 36px;
+    margin: 32px 4px;
+}
+.audio-btn-play {
+    flex: 1;
+    transition: all 0.5s;
+}
+.audio-btn-play-off {
+    background: url("../../assets/play/暂停.png") no-repeat center;
+    background-size: 70px 70px;
+}
+.audio-btn-play-on {
+    background: url("../../assets/play/播放.png") no-repeat center;
+    background-size: 70px 70px;
+}
+.audio-btn-play-off-a {
+    position: absolute;
+    width: 40px;
+    height: 40px;
+    top: 50%;
+    margin-top: -360px;
+    left: 50%;
+    margin-left: 83px;
+    cursor: pointer;
+    background-size: 40px 40px;
+}
+
+.audio-by {
+    position: relative;
+    margin-top: 140px;
+    display: flex;
+    width: 100%;
+    height: 50px;
+}
+.audio-by-all {
+    position: relative;
+    margin: auto;
+    width: 100%;
+    height: 4px;
+    background: rgba(255, 255, 255, 0.8);
+    cursor: pointer;
+}
+.audio-by-now {
+    display: block;
+    width: 0;
+    height: 100%;
+    transition: all 0.3s linear;
+    background: #bd428c;
+}
+
+.audio-by-text-now,
+.audio-by-text-all {
+    padding: 0 10px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    color: white;
+    font-size: 14px;
+}
+.audio-img-cover {
+    position: absolute;
+    width: 100px;
+    height: 100px;
+    top: 50%;
+    left: 50%;
+    margin-top: -30px;
+    margin-left: -50px;
+    border-radius: 50%;
+    transition: all 0.5s;
+}
+.audio-img-canvas-play-on {
+    transition: all 0.5s;
+    transform: rotate(15deg);
+}
+
+#audio {
+    display: none;
+    width: 100vw;
+    height: 100vh;
+    position: fixed;
+    top: 0;
+    background: #a6c1ee;
+}
+.mini-play {
+    width: 100%;
+    // height: 40px;
+    position: fixed;
+    background-color: #a6c0eed7;
+    bottom: 62px;
+    left: 50%;
+    transform: translateX(-50%);
+    .mini-audio {
+        display: flex;
+        justify-content: space-between;
+        padding: 0 20px;
+        .mini-img {
+            width: 50px;
+            height: 50px;
+            z-index: 1;
+            position: relative;
+            top: -11px;
+            img {
+                width: 100%;
+                height: 100%;
+                border-radius: 50%;
+            }
+        }
+        .mini-text {
+            flex: 1;
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+        .mini-ico {
+            width: 50px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            // height: 40px;
+            .audio-btn-play {
+                width: 30px;
+                height: 30px;
+                background-size: cover;
+                flex: none;
+            }
+        }
+    }
+}
+.show {
+    display: block !important;
+}
+.hide {
+    display: none !important;
+}
