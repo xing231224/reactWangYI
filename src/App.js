@@ -1,4 +1,4 @@
-// import "./App.css"
+import "./App.css";
 import "antd-mobile/dist/antd-mobile.css";
 import PlayMusic from "./components/playMusic";
 // 配置路由
@@ -7,7 +7,8 @@ import { mainRoute } from "./router";
 import React from "react";
 
 export default class App extends React.Component {
-  constructor() {
+  constructor(props) {
+    console.log(props);
     super();
   }
   render() {

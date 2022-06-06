@@ -1,15 +1,14 @@
 /*
  * @Author: your name
  * @Date: 2021-07-07 09:49:44
- * @LastEditTime: 2021-09-23 15:26:53
- * @LastEditors: your name
+ * @LastEditTime: 2021-11-29 15:02:52
+ * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \reactWangYi\src\index.js
  */
 import React from "react";
 import ReactDOM from "react-dom";
 import App from "./App";
-
 // 配置路由模式
 import { HashRouter } from "react-router-dom";
 // 导入css

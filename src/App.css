@@ -21,6 +21,7 @@ td {
     font-weight: 400;
     margin: 0;
     padding: 0;
+    font-family: miranafont,"Hiragino Sans GB",STXihei,"Microsoft JhengHei",SimSun,sans-serif;
 }
 h1,
 h2,
@@ -74,13 +75,17 @@ hr {
     overflow: hidden;
 }
 ol,
-input, button, textarea,
-select, optgroup, option {
+input,
+button,
+textarea,
+select,
+optgroup,
+option {
     outline-style: none;
-font-family: inherit;
-font-size: inherit;
-font-style: inherit;
-font-weight: inherit;
+    font-family: inherit;
+    font-size: inherit;
+    font-style: inherit;
+    font-weight: inherit;
 }
 ul {
     list-style-image: none;
@@ -107,4 +112,104 @@ blockquote:after {
     display: flex;
     flex-direction: column;
     justify-content: center;
+}
+.addbackBlur::after {
+    content: "";
+    width: 100vw;
+    height: 100vh;
+    position: absolute;
+    left: 0;
+    top: 0;
+    background: inherit;
+    filter: blur(8px);
+    z-index: -1;
+}
+@keyframes light {
+    0% {
+        box-shadow: 0 0 4px #f00;
+    }
+
+    25% {
+        box-shadow: 0 0 5px #0f0;
+    }
+
+    50% {
+        box-shadow: 0 0 4px #00f;
+    }
+
+    75% {
+        box-shadow: 0 0 5px #0f0;
+    }
+
+    100% {
+        box-shadow: 0 0 4px #f00;
+    }
+}
+.aplayer-bar-wrap .aplayer-bar .aplayer-loaded {
+    position: absolute;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    background: #aaa;
+    height: 2px;
+    -webkit-transition: all 0.5s ease;
+    transition: all 0.5s ease;
+    animation: light 2s ease-in-out infinite;
+    transition: 0.5s;
+}
+.aplayer-bar-wrap .aplayer-bar .aplayer-played {
+    position: absolute;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    background: #b7daff;
+    height: 2px;
+    animation: light 8s ease-in-out infinite;
+
+    animation: light 8s ease-in-out infinite;
+    transition: 0.5s;
+}
+.aplayer-bar-wrap {
+    margin: 0 0 5px;
+}
+.aplayer-bar-wrap .aplayer-bar {
+    position: relative;
+    height: 2px;
+    width: 100%;
+    background: #cdcdcd;
+    cursor: pointer !important;
+}
+.aplayer-bar-wrap .aplayer-bar .aplayer-loaded {
+    position: absolute;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    background: #aaa;
+    height: 2px;
+    -webkit-transition: all 0.5s ease;
+    transition: all 0.5s ease;
+}
+.aplayer-bar-wrap .aplayer-bar .aplayer-played {
+    position: absolute;
+    left: 0;
+    top: 0;
+    bottom: 0 /*;background:#87878d8a*/;
+    height: 2px;
+}
+.aplayer-bar-wrap .aplayer-bar .aplayer-played .aplayer-thumb {
+    position: absolute;
+    top: 0;
+    right: 5px;
+    margin-top: -4px;
+    margin-right: -10px;
+    height: 8px;
+    width: 8px;
+    border: 1px solid #ff7f4000;
+    -webkit-border-radius: 50%;
+    border-radius: 50%;
+    background: #fff;
+    cursor: pointer !important;
+}
+.aplayer-bar-wrap .aplayer-bar .aplayer-played .aplayer-thumb:hover {
+    background: #b7daff;
 }

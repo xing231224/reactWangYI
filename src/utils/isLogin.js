@@ -1,7 +1,7 @@
 /*
  * @Author: your name
  * @Date: 2021-07-09 17:30:50
- * @LastEditTime: 2021-09-28 14:29:21
+ * @LastEditTime: 2021-11-22 10:42:00
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \reactWangYi\src\utils\isLogin.js
@@ -11,7 +11,6 @@ import { alert } from './tips'
 
 
 let isLogin = (a) => {
-    console.log(a);
     let _this = a
     let userInfo = getItem("userInfo") || ""
     if (userInfo === "") {

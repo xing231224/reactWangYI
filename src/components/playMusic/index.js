@@ -1,13 +1,21 @@
 import React from "react";
 import "./index.scss";
 import $ from "jquery";
-import { getMusic, getSongDetail, userLikeList } from "../../api/user";
+import {
+  getMusic,
+  getSongDetail,
+  userLikeList,
+  getMusicLyric,
+  checkMusic,
+} from "../../api/user";
 import { headerNav } from "../../utils/imgUrl";
 import { timeFormat } from "../../filter";
 import { getItem } from "../../utils/storage";
 import isLogin from "../../utils/isLogin";
 import { withRouter } from "react-router-dom";
-
+import store from "../../store";
+import { Toast } from "antd-mobile";
+import "../../utils/yinhua";
 class PlayMusic extends React.Component {
   constructor() {
     super();
@@ -21,6 +29,8 @@ class PlayMusic extends React.Component {
       audio: {
         duration: 0, //总时长
         currentTime: 0, //当前播放时长
+        distance: 95, //歌词距离
+        num: 0, // 个数
       },
       bottom: 0, // 距离底部的距离
       display: null,
@@ -31,7 +41,6 @@ class PlayMusic extends React.Component {
     if (userInfo === "") return isLogin(this);
     this.setState({ userInfo }, () => {
       this.getUserLike();
-      // this.getMusicList();
     });
 
     // let likeId =
@@ -40,12 +49,21 @@ class PlayMusic extends React.Component {
     //   this.getMusicList(this.state.likeId);
     // });
   }
-  componentWillUnmount() {
-    // $ = null;
-  }
   componentDidMount() {
     this.drawAudioPlay();
     this.drawAudioArc();
+    let { audioPlay } = this.state;
+    store.state.on("change", () => {
+      // this.playOrPaused();
+      audioPlay = true;
+      let len = store.state.playList.length;
+      this.getMusicList(store.state.playList[len - 1]);
+      this.setState({ audioPlay }, () => {
+        setTimeout(() => {
+          this.playOrPaused();
+        }, 500);
+      });
+    });
   }
   componentWillReceiveProps(nextProps) {
     let { bottom, display } = this.state;
@@ -62,7 +80,6 @@ class PlayMusic extends React.Component {
       .map((item) => (item = "/" + item))
       .includes(nextProps.location.pathname);
     bottom = flag ? 0 : "62px";
-
     display = flagHide ? "none" : "block";
     this.setState({ bottom, display });
   }
@@ -74,59 +91,90 @@ class PlayMusic extends React.Component {
         likeIds.push(item);
       });
       this.setState({ likeIds }, () => {
-        // this.getSongDetailUrl(likeIds[0]);
         this.getMusicList(likeIds[0]);
       });
     });
   }
-  /**
-   * @description:  获取音乐详情以及播放地址
-   * @param {*} idsArr number || Array
-   * @return {*}
-   */
-  async getSongDetailUrl(idsArr) {
-    let ids = typeof idsArr === "object" ? idsArr.join(",") : idsArr;
-    // 歌曲信息综合
-    let playIng = [];
-    Promise.all([await getSongDetail(ids), await getMusic(ids)]).then((res) => {
-      // 歌曲详情
-      let musicDeatil = res[0].data.songs;
-      // 歌曲地址
-      let musicUrl = res[1].data.data;
-      musicDeatil.forEach((item, index) => {
-        let obj = {};
-        obj.al = item.al;
-        obj.ar = item.ar;
-        playIng.push(obj);
-      });
-      musicUrl.forEach((item, index) => {
-        playIng[index].url = item.url;
-        playIng[index].id = item.id;
-      });
-      this.setState({ playIng });
+
+  getMusicList(id) {
+    this.setState({ list: {} }, async () => {
+      // 获取喜欢的音乐
+      // 获取音乐详情
+      // 获取歌词
+      let list = {};
+      let musicDetail = await (await getSongDetail(id)).data;
+      let musicUrl = await (await getMusic(id)).data;
+      let musicLyric = await (await getMusicLyric(id)).data;
+      let musicCheck = await (await checkMusic(id)).data;
+      Promise.all([musicDetail, musicUrl, musicLyric, musicCheck]).then(
+        (res) => {
+          if (!res[3]) return Toast.fail("暂时无法播放！！！");
+          list = {
+            songs: res[0].songs[0],
+            privileges: res[0].privileges[0],
+            data: res[1].data[0],
+            lrc: res[2].lrc.lyric,
+          };
+          list.lrc = this.parsingLyrics(list.lrc);
+          this.setState({ list });
+        }
+      );
     });
   }
-  async getMusicList(id) {
-    // 获取喜欢的音乐
-    // 获取音乐详情
-    let list = {};
-    let musicDetail = await (await getSongDetail(id)).data;
-    let musicUrl = await (await getMusic(id)).data;
-    Promise.all([musicDetail, musicUrl]).then((res) => {
-      // console.log(res);
-      list = {
-        songs: res[0].songs[0],
-        privileges: res[0].privileges[0],
-        data: res[1].data[0],
-      };
-      this.setState({ list });
+  // 解析歌词
+  parsingLyrics(lrc) {
+    var oLRC = {
+      ti: "", //歌曲名
+      ar: "", //演唱者
+      al: "", //专辑名
+      by: "", //歌词制作人
+      offset: 0, //时间补偿值，单位毫秒，用于调整歌词整体位置
+      ms: [], //歌词数组{t:时间,c:歌词}
+    };
+    if (lrc.length == 0) return;
+    var lrcs = lrc.split("\n"); //用回车拆分成数组
+    for (var i in lrcs) {
+      //遍历歌词数组
+      lrcs[i] = lrcs[i].replace(/(^\s*)|(\s*$)/g, ""); //去除前后空格
+      var t = lrcs[i].substring(lrcs[i].indexOf("[") + 1, lrcs[i].indexOf("]")); //取[]间的内容
+      var s = t.split(":"); //分离:前后文字
+      if (isNaN(parseInt(s[0]))) {
+        //不是数值
+        for (var i in oLRC) {
+          if (i != "ms" && i == s[0].toLowerCase()) {
+            oLRC[i] = s[1];
+          }
+        }
+      } else {
+        //是数值
+        var arr = lrcs[i].match(/\[(\d+:.+?)\]/g); //提取时间字段，可能有多个
+        var start = 0;
+        for (var k in arr) {
+          start += arr[k].length; //计算歌词位置
+        }
+        var content = lrcs[i].substring(start); //获取歌词内容
+        for (var k in arr) {
+          var t = arr[k].substring(1, arr[k].length - 1); //取[]间的内容
+          var s = t.split(":"); //分离:前后文字
+          oLRC.ms.push({
+            //对象{t:时间,c:歌词}加入ms数组
+            t: (parseFloat(s[0]) * 60 + parseFloat(s[1])).toFixed(3),
+            c: content,
+          });
+        }
+      }
+    }
+    oLRC.ms.sort(function (a, b) {
+      //按时间顺序排序
+      return a.t - b.t;
     });
+    return oLRC.ms;
   }
   // 打开播放器
   openPlay() {
     $("#audio")
       .removeClass()
-      .addClass("animate__animated animate__fadeInUpBig show");
+      .addClass("animate__animated animate__fadeInUpBig show addbackBlur");
     setTimeout(() => {
       $(".browse").hide();
     }, 1000);
@@ -182,21 +230,33 @@ class PlayMusic extends React.Component {
       },
     });
   }
+
   onTimeUpdate(e) {
-    let { currentTime, duration } = this.state.audio;
+    let { list } = this.state;
+    let { currentTime, duration, num = 0, distance } = this.state.audio;
     const audio = e.target;
+    num = 0;
+    distance = 95;
+    (list.lrc ? list.lrc : []).forEach((item, index) => {
+      if (item.t < currentTime) {
+        num++;
+        return;
+      }
+    });
+    distance = distance - num * 30;
     // let allWidth = $(".audio-by-all").width();
     let width = (currentTime / duration) * 100;
-    $(".audio-by-now").width(width + "%");
+    $(".aplayer-played").width(width + "%");
     if (audio.ended) {
       this.initPlay();
       return;
     }
-
     this.setState({
       audio: {
         ...this.state.audio,
         currentTime: audio.currentTime,
+        num,
+        distance,
       },
     });
   }
@@ -254,6 +314,7 @@ class PlayMusic extends React.Component {
         list.songs ? list.songs.al.picUrl : null
       }) center center / 100px 100px no-repeat`,
     };
+    const lryStyle = {};
     return (
       <div>
         <div
@@ -286,12 +347,22 @@ class PlayMusic extends React.Component {
           {/* ); */}
           {/* })} */}
         </div>
-        <div id="audio" className="audio audio-html">
+        <div
+          id="audio"
+          className="audio audio-html"
+          style={{
+            backgroundImage: `url(${list.songs ? list.songs.al.picUrl : null})`,
+            backgroundSize: "cover",
+            backgroundRepeat: "no-repeat",
+            backgroundPosition: "center",
+          }}
+        >
           <audio
             ref="audio"
             id="audio-my"
             onCanPlay={() => this.initPlay()}
             onTimeUpdate={(e) => this.onTimeUpdate(e)}
+            autoPlay={true}
             src={list.songs ? list.data.url : null}
             preload="metadata"
           ></audio>
@@ -337,12 +408,50 @@ class PlayMusic extends React.Component {
               height="300px"
             ></canvas>
           </div>
+          <div className="audio-songLry">
+            <div
+              style={{
+                transform: " translateY(" + audio.distance + "px)",
+                transition: "all .5s",
+              }}
+            >
+              {list.lrc
+                ? list.lrc.map((item, index) => {
+                    return (
+                      <p
+                        style={
+                          audio.num - 1 === index
+                            ? { opacity: "1", fontSize: "16px" }
+                            : { fontSize: "12px" }
+                        }
+                        key={index}
+                      >
+                        {" "}
+                        {item.c}{" "}
+                      </p>
+                    );
+                  })
+                : null}
+            </div>
+          </div>
+
           <div className="audio-by">
             <span className="audio-by-text-now">
               {audio.currentTime ? timeFormat(audio.currentTime) : "00:00"}
             </span>
             <div className="audio-by-all">
-              <span className="audio-by-now"></span>
+              {/* <span className="audio-by-now"></span> */}
+              <div className="aplayer-bar-wrap">
+                <div className="aplayer-bar">
+                  <div
+                    className="aplayer-loaded"
+                    style={{ width: "100%" }}
+                  ></div>
+                  <div className="aplayer-played">
+                    <span className="aplayer-thumb"></span>
+                  </div>
+                </div>
+              </div>
             </div>
             <span className="audio-by-text-all">
               {timeFormat(audio.duration)}

@@ -10,6 +10,7 @@ body {
         position: relative;
         top: 20px;
         left: 10px;
+        z-index: 99999;
     }
     .audio-head-tittle,
     .audio-head-tittle-by {
@@ -56,6 +57,18 @@ body {
     }
     to {
         transform: rotate(360deg);
+    }
+}
+.audio-songLry{
+    height: 140px;
+    overflow: hidden;
+    p{
+        color: #31c27c;
+        text-align: center;
+        height: 30px;
+        line-height: 30px;
+        opacity: .5;
+        font-family: miranafont,"Hiragino Sans GB",STXihei,"Microsoft JhengHei",SimSun,sans-serif;
     }
 }
 .audio-img-canvas-on {
@@ -134,7 +147,7 @@ body {
 
 .audio-by {
     position: relative;
-    margin-top: 140px;
+    // margin-top: 140px;
     display: flex;
     width: 100%;
     height: 50px;
@@ -161,8 +174,8 @@ body {
     display: flex;
     flex-direction: column;
     justify-content: center;
-    color: white;
-    font-size: 14px;
+    // color: white;
+    font-size: 12px;
 }
 .audio-img-cover {
     position: absolute;
@@ -187,6 +200,10 @@ body {
     position: fixed;
     top: 0;
     background: #a6c1ee;
+    &:hover{
+        overflow-y: hidden;
+        overflow-x: hidden;
+    }
 }
 .mini-play {
     width: 100%;

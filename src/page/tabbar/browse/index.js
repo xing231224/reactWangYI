@@ -11,6 +11,7 @@ import {
 import { minIcon } from "../../../utils/imgUrl";
 import { thousands } from "../../../filter/index";
 import { setItem, getItem, removeItem } from "../../../utils/storage";
+import store from "../../../store";
 import $ from "jquery";
 import "./index.scss";
 export default class Browse extends React.Component {
@@ -139,6 +140,9 @@ export default class Browse extends React.Component {
       }
     };
   }
+  componentWillUnmount() {
+    window.onscroll = null;
+  }
   init(cat) {
     let { songListHot, listQuery, page, more } = this.state;
     listQuery = {
@@ -157,7 +161,6 @@ export default class Browse extends React.Component {
   cateName(item) {
     this.init(item.name);
     this.setState({ navTitle: item.name });
-
     // 调用子组件的方法
     this.changePullDown();
     this.setState({ isTop: true });
@@ -176,6 +179,24 @@ export default class Browse extends React.Component {
       setItem("historySear", JSON.stringify(historySear));
       this.setState({ historySear });
     }
+    this.goSongList(item.id);
+  }
+  addSongList(id) {
+    let arrList = store.state.playList;
+    arrList.forEach((item, index) => {
+      if (item == id) return arrList.splice(index, 1);
+    });
+    if (arrList.length >= 5) {
+      arrList.pop();
+    }
+    arrList.push(id);
+    store.dispatcher.dispatch({
+      type: "getPlayList",
+      list: arrList,
+    });
+  }
+  goSongList(item) {
+    console.log(item);
   }
   // 清空历史
   historyClear() {
@@ -199,13 +220,13 @@ export default class Browse extends React.Component {
 
   render() {
     let {
-      cateList,
-      songListHot,
+      cateList = [],
+      songListHot = [],
       isReturnTop,
       navTitle,
-      searSongList,
-      historySear,
-      hotSearList,
+      searSongList = [],
+      historySear = [],
+      hotSearList = [],
     } = this.state;
     return (
       <div className="browse">
@@ -307,7 +328,11 @@ export default class Browse extends React.Component {
             <ul>
               {hotSearList.map((item, index) => {
                 return (
-                  <li className="hide" key={item.score}>
+                  <li
+                    className="hide"
+                    key={item.score}
+                    onClick={() => this.goSongList(item)}
+                  >
                     {item.searchWord}
                   </li>
                 );

@@ -49,7 +49,9 @@ export default class Profile extends React.Component {
       // 获取音乐详情
       let musicDetail = await (await getSongDetail(id)).data;
       let musicUrl = await (await getMusic(id)).data;
+      // let musicCheck = await (await checkMusic(id)).data;
       Promise.all([musicDetail, musicUrl]).then((res) => {
+        // console.log(res);
         for (let i = 0; i < res[0].songs.length; i++) {
           likeList[i] = {
             likeId: respone.data.ids[i],
